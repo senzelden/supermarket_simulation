@@ -10,7 +10,7 @@ def visit_all_aisles():
     for i in range(520):
         y -= 1
         yield x, y
-    time.sleep(1)
+    # time.sleep(1)
     for i in range(70):
         y -= 1
         yield x, y
@@ -20,7 +20,7 @@ def visit_all_aisles():
     for i in range(100):
         y += 1
         yield x, y
-    time.sleep(1)
+    # time.sleep(1)
     for i in range(100):
         y -= 1
         yield x, y
@@ -30,7 +30,7 @@ def visit_all_aisles():
     for i in range(100):
         y += 1
         yield x, y
-    time.sleep(1)
+    # time.sleep(1)
     for i in range(100):
         y -= 1
         yield x, y
@@ -40,7 +40,7 @@ def visit_all_aisles():
     for i in range(100):
         y += 1
         yield x, y
-    time.sleep(1)
+    # time.sleep(1)
     for i in range(200):
         y += 1
         yield x, y
@@ -50,7 +50,7 @@ def visit_all_aisles():
     for i in range(150):
         y += 1
         yield x, y
-    time.sleep(1)
+    # time.sleep(1)
     for i in range(100):
         y += 1
         yield x, y
@@ -64,7 +64,7 @@ def visit_all_aisles():
 
 def visit_all_aisles_new():
     # trying out
-    x, y = 860, 700
+    x, y = 850, 700
     for i in range(520):
         y -= 1
         yield x, y
@@ -112,6 +112,36 @@ def visit_all_aisles_new():
         yield x, y
 
 
+def visit_dairy():
+    x, y = 900, 700
+    for i in range(20):
+        y -= 1
+        yield x, y
+    for i in range(50):
+        x -= 1
+        yield x, y
+    for i in range(180):
+        y -= 1
+        yield x, y
+    for i in range(210):
+        x -= 1
+        yield x, y
+    for i in range(180):
+        y -= 1
+        yield x, y
+    for i in range(250):
+        y += 1
+        yield x, y
+    for i in range(100):
+        y += 1
+        yield x, y
+    for i in range(110):
+        x += 1
+        yield x, y
+    for i in range(110):
+        y += 1
+        yield x, y
+
 class Customer:
 
     def __init__(self, image, x, y, path):
@@ -151,17 +181,24 @@ img = cv2.imread('box.png')
 background = cv2.imread('market.png')
 customer = Customer(img, 800, 700, visit_all_aisles())
 customer2 = Customer(img, 800, 700, visit_all_aisles_new())
+customer3 = Customer(img, 800, 700, visit_dairy())
+customers = [Customer(img, 800, 700, visit_all_aisles()) for i in range(1)]
 
 while True:
     frame = background.copy()
-    customer.draw(frame)
-    customer2.draw(frame)
-    customer.move()
-    customer2.move()
+    for customer in customers:
+        customer.draw(frame)
+        customer.move()
+    # customer.draw(frame)
+    # customer.move()
+    # customer2.draw(frame)
+    # customer2.move()
+    # customer3.draw(frame)
+    # customer3.move()
 
     cv2.imshow('frame', frame)
-    if cv2.waitKey(1) & 0xFF == ord('q'):
-        break
+    if cv2.waitKey(1) & 0xFF == ord('n'):
+        customers.append(Customer(img, 800, 700, visit_all_aisles_new()))
 
 
 cv2.destroyAllWindows()
