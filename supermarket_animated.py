@@ -162,7 +162,10 @@ class Customer:
 
 
     def move(self):
-        self.x, self.y = next(self.path)
+        try:
+            self.x, self.y = next(self.path)
+        except StopIteration:
+            pass
         if self.y > 700:
             self.speed = -1
             self.y = 700
@@ -199,6 +202,10 @@ while True:
     cv2.imshow('frame', frame)
     if cv2.waitKey(1) & 0xFF == ord('n'):
         customers.append(Customer(img, 800, 700, visit_all_aisles_new()))
+    if cv2.waitKey(1) & 0xFF == ord('m'):
+        customers.append(Customer(img, 800, 700, visit_all_aisles()))
+    if cv2.waitKey(1) & 0xFF == ord('k'):
+        customers.append(Customer(img, 800, 700, visit_dairy()))
 
 
 cv2.destroyAllWindows()
