@@ -1,5 +1,6 @@
 import random
 import numpy as np
+import time
 import cv2
 
 
@@ -9,6 +10,7 @@ def visit_all_aisles():
     for i in range(520):
         y -= 1
         yield x, y
+    time.sleep(1)
     for i in range(70):
         y -= 1
         yield x, y
@@ -18,6 +20,7 @@ def visit_all_aisles():
     for i in range(100):
         y += 1
         yield x, y
+    time.sleep(1)
     for i in range(100):
         y -= 1
         yield x, y
@@ -27,6 +30,7 @@ def visit_all_aisles():
     for i in range(100):
         y += 1
         yield x, y
+    time.sleep(1)
     for i in range(100):
         y -= 1
         yield x, y
@@ -36,13 +40,18 @@ def visit_all_aisles():
     for i in range(100):
         y += 1
         yield x, y
+    time.sleep(1)
     for i in range(200):
         y += 1
         yield x, y
     for i in range(10):
         x += 1
         yield x, y
-    for i in range(250):
+    for i in range(150):
+        y += 1
+        yield x, y
+    time.sleep(1)
+    for i in range(100):
         y += 1
         yield x, y
     for i in range(650):
