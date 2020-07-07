@@ -48,19 +48,69 @@ def visit_all_aisles():
     for i in range(650):
         x += 1
         yield x, y
-    for i in range(50):
+    for i in range(80):
+        y += 1
+        yield x, y
+
+
+def visit_all_aisles_new():
+    # trying out
+    x, y = 860, 700
+    for i in range(520):
+        y -= 1
+        yield x, y
+    for i in range(70):
+        y -= 1
+        yield x, y
+    for i in range(230):
+        x -= 1
+        yield x, y
+    for i in range(100):
+        y += 1
+        yield x, y
+    for i in range(100):
+        y -= 1
+        yield x, y
+    for i in range(230):
+        x -= 1
+        yield x, y
+    for i in range(100):
+        y += 1
+        yield x, y
+    for i in range(100):
+        y -= 1
+        yield x, y
+    for i in range(230):
+        x -= 1
+        yield x, y
+    for i in range(100):
+        y += 1
+        yield x, y
+    for i in range(200):
+        y += 1
+        yield x, y
+    for i in range(10):
+        x += 1
+        yield x, y
+    for i in range(250):
+        y += 1
+        yield x, y
+    for i in range(650):
+        x += 1
+        yield x, y
+    for i in range(80):
         y += 1
         yield x, y
 
 
 class Customer:
 
-    def __init__(self, image, x, y):
+    def __init__(self, image, x, y, path):
         self.image = image
         self.x = x
         self.y = y
         self.speed = 1
-        self.path = visit_all_aisles()
+        self.path = path
 
 
     def __repr__(self):
@@ -88,14 +138,17 @@ class Customer:
             self.x = 0
 
 
-img = cv2.imread('gradient.png')
+img = cv2.imread('box.png')
 background = cv2.imread('market.png')
-customer = Customer(img, 800, 700)
+customer = Customer(img, 800, 700, visit_all_aisles())
+customer2 = Customer(img, 800, 700, visit_all_aisles_new())
 
 while True:
     frame = background.copy()
     customer.draw(frame)
+    customer2.draw(frame)
     customer.move()
+    customer2.move()
 
     cv2.imshow('frame', frame)
     if cv2.waitKey(1) & 0xFF == ord('q'):
