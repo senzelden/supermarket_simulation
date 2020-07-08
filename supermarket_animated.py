@@ -120,15 +120,19 @@ class Customer:
 class Location:
 
     def __init__(self, name, customers_present):
-        self.image = name
+        self.name = name
         self.customers_present = customers_present
 
 
     def __repr__(self):
         return f"<{self.customers_present} customers present at section {self.name}.>"
 
-fruit = Location('fruit', 0)
+
 checkout = Location('checkout', 0)
+dairy = Location('dairy', 0)
+drinks = Location('drinks', 0)
+fruit = Location('fruit', 0)
+spices = Location('spices', 0)
 
 img = cv2.imread('final_logo.png')
 background = cv2.imread('market.png')
@@ -142,26 +146,32 @@ customer6 = Customer(img, 650, 600, visit_all_aisles(800, 700))
 customer7 = Customer(img, 120, 555, visit_all_aisles(800, 700))
 customer8 = Customer(img, 190, 555, visit_all_aisles(800, 700))
 
-current_time = pd.to_datetime('2020-07-10 07:00')
+
+possible_times = pd.date_range(
+        pd.to_datetime('2020-07-10 07:00'),
+        pd.to_datetime('2020-07-10 21:50'),
+        freq="Min",
+    )
+current_time = pd.to_datetime('08:00:00')
 expected_time_1 = pd.to_datetime('2020-07-10 07:00').time()
 expected_time_2 = pd.to_datetime('2020-07-10 07:01').time()
 
+cdf = pd.read_csv('customers_in_section.csv')
+cdf['time'] = pd.to_datetime(cdf['time'])
+
 while True:
-    time.sleep(1.5)
+    time.sleep(1)
     frame = background.copy()
-    if current_time.time() == expected_time_1:
-        fruit.customers_present = 2
-    elif current_time.time() == expected_time_2:
-        fruit.customers_present = 1
-        checkout.customers_present = 2
-    for i in range(fruit.customers_present):
-        new_x = pos['fruit'][i]['x']
-        new_y = pos['fruit'][i]['y']
-        customers.append(Customer(img, new_x, new_y, random_walk(new_x, new_y)))
-    for i in range(checkout.customers_present):
-        new_x = pos['checkout'][i]['x']
-        new_y = pos['checkout'][i]['y']
-        customers.append(Customer(img, new_x, new_y, random_walk(new_x, new_y)))
+
+    # checkout, dairy, drinks, fruit, spices
+    locations = [checkout, dairy, drinks, fruit, spices]
+    updated_customers_present = cdf[cdf['time'] == current_time]['customers_present'].values
+    for i, location in enumerate(locations):
+        location.customers_present = round(updated_customers_present[i],0).astype(int)
+        for j in range(location.customers_present):
+            new_x = pos[location.name][j]['x']
+            new_y = pos[location.name][j]['y']
+            customers.append(Customer(img, new_x, new_y, random_walk(new_x, new_y)))
     for customer in customers:
         customer.draw(frame)
         customer.move()
@@ -175,7 +185,7 @@ while True:
         customers.append(Customer(img, 800, 700, visit_dairy()))
     if cv2.waitKey(1) & 0xFF == ord('l'):
         cv2.destroyAllWindows()
-
+    customers.clear()
     current_time += pd.to_timedelta(1, unit="min")
 
 
