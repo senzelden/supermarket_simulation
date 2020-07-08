@@ -111,36 +111,52 @@ def visit_all_aisles_new():
         y += 1
         yield x, y
 
+def pathing(direction, x, y):
+    if direction == 'up':
+        y -= 1
+        return (x, y)
+    if direction == 'down':
+        y += 1
+        return (x, y)
+    if direction == 'left':
+        x -= 1
+        return (x, y)
+    if direction == 'right':
+        x += 1
+        return (x, y)
+
 
 def visit_dairy():
     x, y = 900, 700
+
     for i in range(20):
-        y -= 1
+        x, y = pathing('up', x, y)
         yield x, y
     for i in range(50):
-        x -= 1
+        x, y = pathing('left', x, y)
         yield x, y
-    for i in range(180):
-        y -= 1
+    for i in range(200):
+        x, y = pathing('up', x, y)
         yield x, y
     for i in range(210):
-        x -= 1
-        yield x, y
-    for i in range(180):
-        y -= 1
-        yield x, y
-    for i in range(250):
-        y += 1
+        x, y = pathing('left', x, y)
         yield x, y
     for i in range(100):
-        y += 1
+        x, y = pathing('up', x, y)
+        yield x, y
+    for i in range(250):
+        x, y = pathing('down', x, y)
+        yield x, y
+    for i in range(100):
+        x, y = pathing('down', x, y)
         yield x, y
     for i in range(110):
-        x += 1
+        x, y = pathing('right', x, y)
         yield x, y
     for i in range(110):
-        y += 1
+        x, y = pathing('down', x, y)
         yield x, y
+
 
 class Customer:
 
@@ -180,7 +196,7 @@ class Customer:
             self.x = 0
 
 
-img = cv2.imread('resized_logo.png')
+img = cv2.imread('final_logo.png')
 background = cv2.imread('market.png')
 customer = Customer(img, 800, 700, visit_all_aisles())
 customer2 = Customer(img, 800, 700, visit_all_aisles_new())
