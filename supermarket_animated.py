@@ -155,17 +155,13 @@ while True:
         fruit.customers_present = 1
         checkout.customers_present = 2
     for i in range(fruit.customers_present):
-        if i == 0:
-            customers.append(Customer(img, pos['F'][i]['x'], pos['F'][i]['y'], random_walk(pos['F'][i]['x'], pos['F'][i]['y'])))
-        if i == 1:
-            customers.append(Customer(img, pos['F'][i]['x'], pos['F'][i]['y'], random_walk(pos['F'][i]['x'], pos['F'][i]['y'])))
-        ...
+        new_x = pos['fruit'][i]['x']
+        new_y = pos['fruit'][i]['y']
+        customers.append(Customer(img, new_x, new_y, random_walk(new_x, new_y)))
     for i in range(checkout.customers_present):
-        if i == 0:
-            customers.append(Customer(img, pos['C'][i]['x'], pos['C'][i]['y'], random_walk(pos['F'][i]['x'], pos['F'][i]['y'])))
-        if i == 1:
-            customers.append(Customer(img, pos['C'][i]['x'], pos['C'][i]['y'], random_walk(pos['F'][i]['x'], pos['F'][i]['y'])))
-        ...
+        new_x = pos['checkout'][i]['x']
+        new_y = pos['checkout'][i]['y']
+        customers.append(Customer(img, new_x, new_y, random_walk(new_x, new_y)))
     for customer in customers:
         customer.draw(frame)
         customer.move()
