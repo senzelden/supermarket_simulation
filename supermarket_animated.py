@@ -4,113 +4,6 @@ import time
 import cv2
 
 
-def visit_all_aisles():
-    # trying out
-    x, y = 800, 700
-    for i in range(520):
-        y -= 1
-        yield x, y
-    # time.sleep(1)
-    for i in range(70):
-        y -= 1
-        yield x, y
-    for i in range(230):
-        x -= 1
-        yield x, y
-    for i in range(100):
-        y += 1
-        yield x, y
-    # time.sleep(1)
-    for i in range(100):
-        y -= 1
-        yield x, y
-    for i in range(230):
-        x -= 1
-        yield x, y
-    for i in range(100):
-        y += 1
-        yield x, y
-    # time.sleep(1)
-    for i in range(100):
-        y -= 1
-        yield x, y
-    for i in range(230):
-        x -= 1
-        yield x, y
-    for i in range(100):
-        y += 1
-        yield x, y
-    # time.sleep(1)
-    for i in range(200):
-        y += 1
-        yield x, y
-    for i in range(10):
-        x += 1
-        yield x, y
-    for i in range(150):
-        y += 1
-        yield x, y
-    # time.sleep(1)
-    for i in range(100):
-        y += 1
-        yield x, y
-    for i in range(650):
-        x += 1
-        yield x, y
-    for i in range(80):
-        y += 1
-        yield x, y
-
-
-def visit_all_aisles_new():
-    # trying out
-    x, y = 850, 700
-    for i in range(520):
-        y -= 1
-        yield x, y
-    for i in range(70):
-        y -= 1
-        yield x, y
-    for i in range(230):
-        x -= 1
-        yield x, y
-    for i in range(100):
-        y += 1
-        yield x, y
-    for i in range(100):
-        y -= 1
-        yield x, y
-    for i in range(230):
-        x -= 1
-        yield x, y
-    for i in range(100):
-        y += 1
-        yield x, y
-    for i in range(100):
-        y -= 1
-        yield x, y
-    for i in range(230):
-        x -= 1
-        yield x, y
-    for i in range(100):
-        y += 1
-        yield x, y
-    for i in range(200):
-        y += 1
-        yield x, y
-    for i in range(10):
-        x += 1
-        yield x, y
-    for i in range(250):
-        y += 1
-        yield x, y
-    for i in range(650):
-        x += 1
-        yield x, y
-    for i in range(80):
-        y += 1
-        yield x, y
-
 def pathing(direction, x, y):
     if direction == 'up':
         y -= 1
@@ -124,6 +17,33 @@ def pathing(direction, x, y):
     if direction == 'right':
         x += 1
         return (x, y)
+
+
+def visit_all_aisles(start_x, start_y):
+    # trying out
+    x, y = start_x, start_y
+
+    commands = {
+        0: ['up', 520],
+        1: ['up', 70],
+        2: ['left', 230],
+        3: ['down', 100],
+        4: ['up', 100],
+        5: ['left', 230],
+        6: ['down', 100],
+        7: ['up', 100],
+        8: ['left', 230],
+        9: ['down', 100],
+        10: ['down', 200],
+        11: ['right', 10],
+        12: ['down', 250],
+        13: ['right', 650],
+        14: ['down', 80]
+    }
+    for j in range(len(commands)):
+        for i in range(commands[j][1]):
+            x, y = pathing(commands[j][0], x, y)
+            yield x, y
 
 
 def visit_dairy():
@@ -185,28 +105,19 @@ class Customer:
 
 img = cv2.imread('final_logo.png')
 background = cv2.imread('market.png')
-customer = Customer(img, 800, 700, visit_all_aisles())
-customer2 = Customer(img, 800, 700, visit_all_aisles_new())
-customer3 = Customer(img, 800, 700, visit_dairy())
-customers = [Customer(img, 800, 700, visit_all_aisles()) for i in range(1)]
+customers = [Customer(img, 800, 700, visit_all_aisles(800, 700)) for i in range(1)]
 
 while True:
     frame = background.copy()
     for customer in customers:
         customer.draw(frame)
         customer.move()
-    # customer.draw(frame)
-    # customer.move()
-    # customer2.draw(frame)
-    # customer2.move()
-    # customer3.draw(frame)
-    # customer3.move()
 
     cv2.imshow('frame', frame)
     if cv2.waitKey(1) & 0xFF == ord('n'):
-        customers.append(Customer(img, 800, 700, visit_all_aisles_new()))
+        customers.append(Customer(img, 800, 700, visit_all_aisles(850, 700)))
     if cv2.waitKey(1) & 0xFF == ord('m'):
-        customers.append(Customer(img, 800, 700, visit_all_aisles()))
+        customers.append(Customer(img, 800, 700, visit_all_aisles(800, 700)))
     if cv2.waitKey(1) & 0xFF == ord('k'):
         customers.append(Customer(img, 800, 700, visit_dairy()))
 
