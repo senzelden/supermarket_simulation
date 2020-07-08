@@ -89,18 +89,18 @@ class Customer:
             self.x, self.y = next(self.path)
         except StopIteration:
             pass
-        if self.y > 700:
-            self.speed = -1
-            self.y = 700
-        if self.x > 1000:
-            self.speed = -1
-            self.x = 1000
-        if self.y < 0:
-            self.speed = 1
-            self.y = 0
-        if self.x < 0:
-            self.speed = 1
-            self.x = 0
+        # if self.y > 700:
+        #     self.speed = -1
+        #     self.y = 700
+        # if self.x > 1000:
+        #     self.speed = -1
+        #     self.x = 1000
+        # if self.y < 0:
+        #     self.speed = 1
+        #     self.y = 0
+        # if self.x < 0:
+        #     self.speed = 1
+        #     self.x = 0
 
 
 img = cv2.imread('final_logo.png')
@@ -109,6 +109,7 @@ customers = [Customer(img, 800, 700, visit_all_aisles(800, 700)) for i in range(
 
 while True:
     frame = background.copy()
+
     for customer in customers:
         customer.draw(frame)
         customer.move()
