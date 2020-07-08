@@ -2,6 +2,9 @@
 # distance between position horizontal = 90
 # distance between position vertical = 60
 
+pos = {'C': {0: {'x': 120, 'y': 600}, 1: {'x': 190, 'y': 600}, 2: {'x': 350, 'y': 600}, 3: {'x': 420, 'y': 600}},
+    'F': {0: {'x': 800, 'y': 200}, 1: {'x': 890, 'y': 200}, 2: {'x': 800, 'y': 290}, 3: {'x': 890, 'y': 290}}}
+
 # checkout
 pos_C1 = [120,600]
 pos_C2 = [190,600]

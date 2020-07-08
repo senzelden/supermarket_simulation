@@ -2,6 +2,9 @@ import random
 import numpy as np
 import time
 import cv2
+import pandas as pd
+from datetime import datetime
+from positions import pos
 
 
 def pathing(direction, x, y):
@@ -44,6 +47,17 @@ def visit_all_aisles(start_x, start_y):
         for i in range(commands[j][1]):
             x, y = pathing(commands[j][0], x, y)
             yield x, y
+
+
+def random_walk(x, y):
+    go_up = random.randint(0,1)
+    for i in range(random.randint(20, 50)):
+        if go_up == 0:
+            direction = 'down'
+        else:
+            direction = 'up'
+        x, y = pathing(direction, x, y)
+        yield x, y
 
 
 def visit_dairy():
@@ -103,9 +117,22 @@ class Customer:
         #     self.x = 0
 
 
+class Location:
+
+    def __init__(self, name, customers_present):
+        self.image = name
+        self.customers_present = customers_present
+
+
+    def __repr__(self):
+        return f"<{self.customers_present} customers present at section {self.name}.>"
+
+fruit = Location('fruit', 0)
+checkout = Location('checkout', 0)
+
 img = cv2.imread('final_logo.png')
 background = cv2.imread('market.png')
-customers = [Customer(img, 800, 700, visit_all_aisles(800, 700)) for i in range(1)]
+customers = []
 customer1 = Customer(img, 120, 600, visit_all_aisles(800, 700))
 customer2 = Customer(img, 190, 600, visit_all_aisles(800, 700))
 customer3 = Customer(img, 350, 600, visit_all_aisles(800, 700))
@@ -115,20 +142,33 @@ customer6 = Customer(img, 650, 600, visit_all_aisles(800, 700))
 customer7 = Customer(img, 120, 555, visit_all_aisles(800, 700))
 customer8 = Customer(img, 190, 555, visit_all_aisles(800, 700))
 
-while True:
-    frame = background.copy()
+current_time = pd.to_datetime('2020-07-10 07:00')
+expected_time_1 = pd.to_datetime('2020-07-10 07:00').time()
+expected_time_2 = pd.to_datetime('2020-07-10 07:01').time()
 
-    # for customer in customers:
-    #     customer.draw(frame)
-    #     customer.move()
-    customer1.draw(frame)
-    customer2.draw(frame)
-    customer3.draw(frame)
-    customer4.draw(frame)
-    customer5.draw(frame)
-    customer6.draw(frame)
-    customer7.draw(frame)
-    customer8.draw(frame)
+while True:
+    time.sleep(1.5)
+    frame = background.copy()
+    if current_time.time() == expected_time_1:
+        fruit.customers_present = 2
+    elif current_time.time() == expected_time_2:
+        fruit.customers_present = 1
+        checkout.customers_present = 2
+    for i in range(fruit.customers_present):
+        if i == 0:
+            customers.append(Customer(img, pos['F'][i]['x'], pos['F'][i]['y'], random_walk(pos['F'][i]['x'], pos['F'][i]['y'])))
+        if i == 1:
+            customers.append(Customer(img, pos['F'][i]['x'], pos['F'][i]['y'], random_walk(pos['F'][i]['x'], pos['F'][i]['y'])))
+        ...
+    for i in range(checkout.customers_present):
+        if i == 0:
+            customers.append(Customer(img, pos['C'][i]['x'], pos['C'][i]['y'], random_walk(pos['F'][i]['x'], pos['F'][i]['y'])))
+        if i == 1:
+            customers.append(Customer(img, pos['C'][i]['x'], pos['C'][i]['y'], random_walk(pos['F'][i]['x'], pos['F'][i]['y'])))
+        ...
+    for customer in customers:
+        customer.draw(frame)
+        customer.move()
 
     cv2.imshow('frame', frame)
     if cv2.waitKey(1) & 0xFF == ord('n'):
@@ -139,6 +179,8 @@ while True:
         customers.append(Customer(img, 800, 700, visit_dairy()))
     if cv2.waitKey(1) & 0xFF == ord('l'):
         cv2.destroyAllWindows()
+
+    current_time += pd.to_timedelta(1, unit="min")
 
 
 cv2.destroyAllWindows()
