@@ -162,8 +162,14 @@ cdf['time'] = pd.to_datetime(cdf['time'])
 while True:
     time.sleep(1)
     frame = background.copy()
+    # Write some Text
+    cv2.putText(frame, str(current_time.time()),
+                (10, 30),
+                cv2.FONT_HERSHEY_SIMPLEX,
+                1,
+                (124, 124, 124),
+                2)
 
-    # checkout, dairy, drinks, fruit, spices
     locations = [checkout, dairy, drinks, fruit, spices]
     updated_customers_present = cdf[cdf['time'] == current_time]['customers_present'].values
     for i, location in enumerate(locations):
