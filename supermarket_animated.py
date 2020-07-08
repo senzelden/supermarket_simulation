@@ -128,34 +128,21 @@ def pathing(direction, x, y):
 
 def visit_dairy():
     x, y = 900, 700
-
-    for i in range(20):
-        x, y = pathing('up', x, y)
-        yield x, y
-    for i in range(50):
-        x, y = pathing('left', x, y)
-        yield x, y
-    for i in range(200):
-        x, y = pathing('up', x, y)
-        yield x, y
-    for i in range(210):
-        x, y = pathing('left', x, y)
-        yield x, y
-    for i in range(100):
-        x, y = pathing('up', x, y)
-        yield x, y
-    for i in range(250):
-        x, y = pathing('down', x, y)
-        yield x, y
-    for i in range(100):
-        x, y = pathing('down', x, y)
-        yield x, y
-    for i in range(110):
-        x, y = pathing('right', x, y)
-        yield x, y
-    for i in range(110):
-        x, y = pathing('down', x, y)
-        yield x, y
+    commands = {
+        0: ['up', 20],
+        1: ['left', 50],
+        2: ['up', 200],
+        3: ['left', 210],
+        4: ['up', 100],
+        5: ['down', 250],
+        6: ['down', 100],
+        7: ['right', 110],
+        8: ['down', 110]
+    }
+    for j in range(len(commands)):
+        for i in range(commands[j][1]):
+            x, y = pathing(commands[j][0], x, y)
+            yield x, y
 
 
 class Customer:
