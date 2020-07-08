@@ -180,7 +180,7 @@ class Customer:
             self.x = 0
 
 
-img = cv2.imread('box.png')
+img = cv2.imread('resized_logo.png')
 background = cv2.imread('market.png')
 customer = Customer(img, 800, 700, visit_all_aisles())
 customer2 = Customer(img, 800, 700, visit_all_aisles_new())
