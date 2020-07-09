@@ -1,9 +1,10 @@
+"""program to simulate customer behaviour in a supermarket visually"""
 import random
-import numpy as np
 import time
+from datetime import datetime
+import numpy as np
 import cv2
 import pandas as pd
-from datetime import datetime
 from positions import pos
 
 
@@ -43,15 +44,15 @@ def visit_all_aisles(start_x, start_y):
         13: ['right', 650],
         14: ['down', 80]
     }
-    for j in range(len(commands)):
-        for i in range(commands[j][1]):
-            x, y = pathing(commands[j][0], x, y)
+    for command in commands:
+        for _ in range(command[1]):
+            x, y = pathing(command[0], x, y)
             yield x, y
 
 
 def random_walk(x, y):
-    go_up = random.randint(0,1)
-    for i in range(random.randint(20, 50)):
+    go_up = random.randint(0, 1)
+    for _ in range(random.randint(20, 50)):
         if go_up == 0:
             direction = 'down'
         else:
@@ -73,13 +74,16 @@ def visit_dairy():
         7: ['right', 110],
         8: ['down', 110]
     }
-    for j in range(len(commands)):
-        for i in range(commands[j][1]):
-            x, y = pathing(commands[j][0], x, y)
+    for command in commands:
+        for _ in range(command[1]):
+            x, y = pathing(command[0], x, y)
             yield x, y
 
 
 class Customer:
+    """
+    Customers for supermarket simulation.
+    """
 
     def __init__(self, image, x, y, path):
         self.image = image
@@ -118,6 +122,9 @@ class Customer:
 
 
 class Location:
+    """
+    Location for supermarket simulation.
+    """
 
     def __init__(self, name, customers_present):
         self.name = name
