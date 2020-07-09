@@ -736,6 +736,7 @@ time,location,customers_present
 09:28:00,dairy,1.8
 09:28:00,drinks,1.2
 09:28:00,fruit,0.4
+09:28:00,spices,0.0
 09:29:00,checkout,1.6
 09:29:00,dairy,0.4
 09:29:00,drinks,0.4
@@ -748,6 +749,7 @@ time,location,customers_present
 09:30:00,spices,0.6
 09:31:00,checkout,2.4
 09:31:00,dairy,0.6
+09:31:00,drinks,0.0
 09:31:00,fruit,0.6
 09:31:00,spices,0.4
 09:32:00,checkout,1.6
@@ -758,6 +760,7 @@ time,location,customers_present
 09:33:00,checkout,1.8
 09:33:00,dairy,0.6
 09:33:00,drinks,0.4
+09:33:00,fruit,0.0
 09:33:00,spices,0.4
 09:34:00,checkout,0.4
 09:34:00,dairy,1.0
@@ -811,6 +814,7 @@ time,location,customers_present
 09:43:00,spices,0.4
 09:44:00,checkout,2.4
 09:44:00,dairy,0.2
+09:44:00,drinks,0.0
 09:44:00,fruit,0.4
 09:44:00,spices,0.6
 09:45:00,checkout,2.0
@@ -822,10 +826,12 @@ time,location,customers_present
 09:46:00,dairy,1.2
 09:46:00,drinks,0.6
 09:46:00,fruit,1.4
+09:46:00,spices,0.0
 09:47:00,checkout,1.0
 09:47:00,dairy,0.8
 09:47:00,drinks,0.2
 09:47:00,fruit,0.6
+09:47:00,spices,0.0
 09:48:00,checkout,1.4
 09:48:00,dairy,0.6
 09:48:00,drinks,1.0

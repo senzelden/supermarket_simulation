@@ -10,3 +10,5 @@ This project aims to create a program that simulates customer behaviour in a sup
 * Implement a Markov Chain-based data generator
 * Write a simulator
 * Visualize the customer movement
+
+![transition_probabilites](transition.png)

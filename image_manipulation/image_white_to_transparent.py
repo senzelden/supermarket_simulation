@@ -1,6 +1,6 @@
 from PIL import Image
 
-img = Image.open('images/resized_logo.png')
+img = Image.open('resized_customer.png')
 img = img.convert("RGBA")
 datas = img.getdata()
 
@@ -12,4 +12,4 @@ for item in datas:
         newData.append(item)
 
 img.putdata(newData)
-img.save("images/final_logo.png", "PNG")
+img.save("images/final_customer.png", "PNG")
