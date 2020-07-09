@@ -45,8 +45,8 @@ def visit_all_aisles(start_x, start_y):
         14: ['down', 80]
     }
     for command in commands:
-        for _ in range(command[1]):
-            x, y = pathing(command[0], x, y)
+        for _ in range(commands[command][1]):
+            x, y = pathing(commands[command][0], x, y)
             yield x, y
 
 
@@ -75,8 +75,8 @@ def visit_dairy():
         8: ['down', 110]
     }
     for command in commands:
-        for _ in range(command[1]):
-            x, y = pathing(command[0], x, y)
+        for _ in range(commands[command][1]):
+            x, y = pathing(commands[command][0], x, y)
             yield x, y
 
 
