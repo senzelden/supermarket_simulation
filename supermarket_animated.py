@@ -8,8 +8,8 @@ import pandas as pd
 CUSTOMER_IMAGE_PATH = "images/final_logo.png"
 BACKGROUND_IMAGE_PATH = "images/resized_market.png"
 SUPERMARKET_LOGO_PATH = "images/resized_doodl.png"
-PRESENCE_PROBABILITIES_PATH = "data/customers_in_section.csv"
-POSITIONS = pd.read_json("data/positions.json")
+PRESENCE_PROBABILITIES_PATH = "data/aggregated/customers_in_section.csv"
+POSITIONS = pd.read_json("data/aggregated/positions.json")
 START_TIME = "08:00:00"
 
 
