@@ -4,3 +4,4 @@ __pycache__/
 project_notes.txt
 supermarket_cust_based.py
 .pylintrc
+.gitignore
