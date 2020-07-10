@@ -9,7 +9,7 @@ CUSTOMER_IMAGE_PATH = "images/final_logo.png"
 BACKGROUND_IMAGE_PATH = "images/resized_market.png"
 SUPERMARKET_LOGO_PATH = "images/resized_doodl.png"
 PRESENCE_PROBABILITIES_PATH = "data/aggregated/customers_in_section.csv"
-POSITIONS = pd.read_json("data/aggregated/positions.json")
+POSITIONS = pd.read_json("data/positions.json")
 START_TIME = "08:00:00"
 
 
@@ -60,6 +60,7 @@ def put_customers_and_revenue(image, sections, dataframe, revenue):
     for customer in customers:
         customer.draw(image)
     write_text(image, f"Total Revenue: {revenue}EUR", 10, 130)
+    return revenue
 
 
 def update_customers_present(updated_list, index):
@@ -140,7 +141,7 @@ if __name__ == "__main__":
         time.sleep(1)
         print(current_time)
         frame = background.copy()
-        put_customers_and_revenue(frame, locations, df_presences, total_revenue)
+        total_revenue = put_customers_and_revenue(frame, locations, df_presences, total_revenue)
         write_text(frame, current_time.time(), 10, 30)
         write_customers_text(frame)
         frame[183:223, 500:540] = doodl
