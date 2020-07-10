@@ -1,5 +1,5 @@
 # Project: Supermarket Simulation
-![supermarket_visualization](supermarket.gif)
+![supermarket_visualization](images/supermarket.gif)
 ### Description
 
 This project aims to create a program that simulates customer behaviour in a supermarket.
@@ -11,4 +11,4 @@ This project aims to create a program that simulates customer behaviour in a sup
 * Write a simulator
 * Visualize the customer movement
 
-![transition_probabilites](transition.png)
+![transition_probabilites](images/transition.png)
