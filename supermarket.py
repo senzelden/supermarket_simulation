@@ -1,7 +1,7 @@
 """program to simulate customer behaviour in a supermarket visually"""
+import cv2
 import time
 import numpy as np
-import cv2
 import pandas as pd
 
 
