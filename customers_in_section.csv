@@ -1009,6 +1009,7 @@ time,location,customers_present
 10:22:00,spices,0.6
 10:23:00,checkout,1.8
 10:23:00,dairy,1.6
+10:23:00,drinks,0.0
 10:23:00,fruit,1.6
 10:23:00,spices,1.0
 10:24:00,checkout,1.8
@@ -1018,6 +1019,7 @@ time,location,customers_present
 10:24:00,spices,0.6
 10:25:00,checkout,1.0
 10:25:00,dairy,0.4
+10:25:00,drinks,0.0
 10:25:00,fruit,1.6
 10:25:00,spices,0.4
 10:26:00,checkout,1.6

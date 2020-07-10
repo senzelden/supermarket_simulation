@@ -9,22 +9,8 @@ CUSTOMER_IMAGE_PATH = "final_logo.png"
 BACKGROUND_IMAGE_PATH = "resized_market.png"
 SUPERMARKET_LOGO_PATH = "resized_doodl.png"
 PRESENCE_PROBABILITIES_PATH = "customers_in_section.csv"
-ENTRANCE_PROBABILITIES_PATH = "avg_at_entrance.csv"
 POSITIONS = pd.read_json("positions.json")
 START_TIME = "08:00:00"
-SHOW_ENTRANCE = False
-
-
-def write_text(text, x_position, y_position):
-    cv2.putText(
-        frame,
-        str(text),
-        (x_position, y_position),
-        cv2.FONT_HERSHEY_SIMPLEX,
-        1,
-        (0, 0, 0),
-        2,
-    )
 
 
 class Customer:
@@ -42,7 +28,7 @@ class Customer:
 
     def draw(self, background_image):
         background_image[
-            self.y: self.y + self.image.shape[0], self.x: self.x + self.image.shape[1]
+            self.y : self.y + self.image.shape[0], self.x : self.x + self.image.shape[1]
         ] = self.image
 
 
@@ -60,6 +46,76 @@ class Location:
         return f"<{self.customers_present} customers present at section {self.name}.>"
 
 
+def put_customers_and_revenue(image, sections, dataframe, revenue):
+    """puts customers and info about revenue on image"""
+    customers_present = dataframe[dataframe["time"] == current_time][
+        "customers_present"
+    ].values
+    for i, section in enumerate(sections):
+        section.customers_present = update_customers_present(customers_present, i)
+        for j in range(int(section.customers_present)):
+            new_img, new_x, new_y = update_customer_values(POSITIONS, img, section, j)
+            customers.append(Customer(new_img, new_x, new_y))
+        revenue += int(section.customers_present * section.revenue_per_minute)
+    for customer in customers:
+        customer.draw(image)
+    write_text(image, f"Total Revenue: {revenue}EUR", 10, 130)
+
+
+def update_customers_present(updated_list, index):
+    """updates customers present for location"""
+    new_presence = np.random.poisson(updated_list[index])
+    if new_presence > 8:
+        new_presence = 8
+    return new_presence
+
+
+def update_customer_values(pos_dict, image, location, index):
+    """updates values for customers present at location"""
+    x_update = pos_dict[location.name][int(index)]["x"]
+    y_update = pos_dict[location.name][int(index)]["y"] + 136
+    if index % 2 == 0:
+        img_update = image.copy()
+    else:
+        img_update = img[:, ::-1, :].copy()
+    return img_update, x_update, y_update
+
+
+def write_customers_text(image):
+    """writes info on customers present on image"""
+    customers_screen_text = f"""
+        Customers:
+        Checkout: {checkout.customers_present}
+        Dairy: {dairy.customers_present}
+        Drinks: {drinks.customers_present}
+        Fruit: {fruit.customers_present}
+        Spices: {spices.customers_present}
+        """
+    x0 = 450
+    y0, dy = 0, 40
+    for i, line in enumerate(customers_screen_text.split("\n")):
+        if i >= 5:
+            x0 = 700
+            y0 = 80
+            y_updated = y0 + (i - 5) * dy
+        else:
+            y_updated = y0 + i * dy
+        write_text(image, line, x0, y_updated)
+
+
+def write_text(image, text, x_position, y_position):
+    """adds text to background image at x_position, y_position"""
+    cv2.putText(
+        image,
+        str(text),
+        (x_position, y_position),
+        cv2.FONT_HERSHEY_SIMPLEX,
+        1,
+        (0, 0, 0),
+        2,
+    )
+
+
 if __name__ == "__main__":
     img = cv2.imread(CUSTOMER_IMAGE_PATH)
     background = cv2.imread(BACKGROUND_IMAGE_PATH)
@@ -73,79 +129,22 @@ if __name__ == "__main__":
     entrance = Location("entrance", 0, 0)
 
     locations = [checkout, dairy, drinks, fruit, spices]
-    if SHOW_ENTRANCE is True:
-        locations.append(entrance)
     customers = []
     total_revenue = 0
     current_time = pd.to_datetime(START_TIME)
-    updated_customers_present = 0
-    updated_customers_at_entrance = 0
 
     df_presences = pd.read_csv(PRESENCE_PROBABILITIES_PATH)
-    df_entrance = pd.read_csv(ENTRANCE_PROBABILITIES_PATH)
     df_presences["time"] = pd.to_datetime(df_presences["time"]).copy()
-    df_entrance["time"] = pd.to_datetime(df_entrance["time"]).copy()
 
     while True:
         time.sleep(1)
-        frame = background.copy()
-        updated_customers_present = df_presences[df_presences["time"] == current_time][
-            "customers_present"
-        ].values
-        if SHOW_ENTRANCE is True:
-            updated_customers_at_entrance = df_entrance[df_entrance["time"] == current_time][
-                "customers_present"
-            ].values
-
-        for i, location in enumerate(locations):
-            if (SHOW_ENTRANCE is True) and (location == "entrance" or i == 5):
-                location.customers_present = np.random.poisson(
-                    updated_customers_at_entrance
-                )
-            else:
-                location.customers_present = np.random.poisson(updated_customers_present[i])
-            # prevent IndexError for POSITIONS dict
-            if location.customers_present > 8:
-                location.customers_present = 8
-            for j in range(int(location.customers_present)):
-                new_x = POSITIONS[location.name][int(j)]["x"]
-                new_y = POSITIONS[location.name][int(j)]["y"] + 136
-                if j % 2 == 0:
-                    new_img = img.copy()
-                else:
-                    new_img = img[:, ::-1, :].copy()
-                customers.append(Customer(new_img, new_x, new_y))
-            total_revenue += int(location.customers_present * location.revenue_per_minute)
-        for customer in customers:
-            customer.draw(frame)
-
-        write_text(current_time.time(), 10, 30)
-        write_text(f"Total Revenue: {total_revenue}EUR", 10, 130)
-        customers_screen_text = (
-            f"""
-            Customers:
-            Checkout: {checkout.customers_present}
-            Dairy: {dairy.customers_present}
-            Drinks: {drinks.customers_present}
-            Fruit: {fruit.customers_present}
-            Spices: {spices.customers_present}
-            """
-        )
-        x0 = 450
-        y0, dy = 0, 40
-        for i, line in enumerate(customers_screen_text.split("\n")):
-            if i >= 5:
-                x0 = 700
-                y0 = 80
-                y_updated = y0 + (i - 5) * dy
-            else:
-                y_updated = y0 + i * dy
-            write_text(line, x0, y_updated)
-
-        frame[183: 223, 500:540] = doodl
-
-        cv2.imshow("frame", frame)
         print(current_time)
+        frame = background.copy()
+        put_customers_and_revenue(frame, locations, df_presences, total_revenue)
+        write_text(frame, current_time.time(), 10, 30)
+        write_customers_text(frame)
+        frame[183:223, 500:540] = doodl
+        cv2.imshow("frame", frame)
         customers.clear()
         current_time += pd.to_timedelta(1, unit="min")
 
