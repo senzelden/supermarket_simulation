@@ -5,11 +5,11 @@ import cv2
 import pandas as pd
 
 
-CUSTOMER_IMAGE_PATH = "final_logo.png"
-BACKGROUND_IMAGE_PATH = "resized_market.png"
-SUPERMARKET_LOGO_PATH = "resized_doodl.png"
-PRESENCE_PROBABILITIES_PATH = "customers_in_section.csv"
-POSITIONS = pd.read_json("positions.json")
+CUSTOMER_IMAGE_PATH = "images/final_logo.png"
+BACKGROUND_IMAGE_PATH = "images/resized_market.png"
+SUPERMARKET_LOGO_PATH = "images/resized_doodl.png"
+PRESENCE_PROBABILITIES_PATH = "data/customers_in_section.csv"
+POSITIONS = pd.read_json("data/positions.json")
 START_TIME = "08:00:00"
 
 
@@ -28,7 +28,7 @@ class Customer:
 
     def draw(self, background_image):
         background_image[
-            self.y : self.y + self.image.shape[0], self.x : self.x + self.image.shape[1]
+            self.y: self.y + self.image.shape[0], self.x: self.x + self.image.shape[1]
         ] = self.image
 
 
