@@ -19,9 +19,11 @@ class Customer:
     """
 
     def __init__(self, image, x, y):
+        if not isinstance(x, int) or not isinstance(y, int):
+            raise TypeError("x and y must be set to an integer")
         self.image = image
-        self.x = x
-        self.y = y
+        self.x = int(x)
+        self.y = int(y)
 
     def __repr__(self):
         return f"<Customer at {self.x}/{self.y}>"
@@ -38,9 +40,11 @@ class Location:
     """
 
     def __init__(self, name, customers_present, revenue_per_minute):
-        self.name = name
+        if not isinstance(name, str):
+            raise TypeError("name must be set to a string")
+        self.name = str(name)
         self.customers_present = customers_present
-        self.revenue_per_minute = revenue_per_minute
+        self.revenue_per_minute = int(revenue_per_minute)
 
     def __repr__(self):
         return f"<{self.customers_present} customers present at section {self.name}.>"
