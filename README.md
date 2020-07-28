@@ -1,4 +1,4 @@
-![build](https://github.com/senzelden/supermarket_simulation/workflows/Python%20application/badge.svg)
+![build](https://github.com/senzelden/supermarket_simulation/workflows/supermarket/badge.svg)
 [![Python: 3.8](https://img.shields.io/badge/python-3.8-blue.svg)](https://docs.python.org/3.8/)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
