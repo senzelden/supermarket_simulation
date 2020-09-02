@@ -21,6 +21,8 @@ class Customer:
     def __init__(self, image, x, y):
         if not isinstance(x, int) or not isinstance(y, int):
             raise TypeError("x and y must be set to an integer")
+        elif (x < 0) or (y < 0):
+            raise ValueError("x and y must be positive integers")
         self.image = image
         self.x = int(x)
         self.y = int(y)
@@ -82,7 +84,7 @@ def update_customer_values(pos_dict, image, location, index):
     if index % 2 == 0:
         img_update = image.copy()
     else:
-        img_update = img[:, ::-1, :].copy()
+        img_update = image[:, ::-1, :].copy()
     return img_update, x_update, y_update
 
 
@@ -110,6 +112,8 @@ def write_customers_text(image):
 
 def write_text(image, text, x_position, y_position):
     """adds text to background image at x_position, y_position"""
+    if not isinstance(text, str):
+        raise TypeError("text must be a string")
     cv2.putText(
         image,
         str(text),
