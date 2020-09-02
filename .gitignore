@@ -6,3 +6,4 @@ supermarket_cust_based.py
 .pylintrc
 .gitignore
 pre_processing/images/
+.coverage
