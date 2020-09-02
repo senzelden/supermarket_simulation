@@ -32,7 +32,7 @@ class Customer:
 
     def draw(self, background_image):
         background_image[
-            self.y: self.y + self.image.shape[0], self.x: self.x + self.image.shape[1]
+            self.y : self.y + self.image.shape[0], self.x : self.x + self.image.shape[1]
         ] = self.image
 
 
@@ -149,7 +149,9 @@ if __name__ == "__main__":
         time.sleep(1)
         print(current_time)
         frame = background.copy()
-        total_revenue = put_customers_and_revenue(frame, locations, df_presences, total_revenue)
+        total_revenue = put_customers_and_revenue(
+            frame, locations, df_presences, total_revenue
+        )
         write_text(frame, current_time.time(), 10, 30)
         write_customers_text(frame)
         frame[183:223, 500:540] = doodl

@@ -5,7 +5,15 @@ import numpy as np
 import pandas as pd
 import pytest
 
-from supermarket import Customer, Location, put_customers_and_revenue, update_customers_present, update_customer_values, write_customers_text, write_text
+from supermarket import (
+    Customer,
+    Location,
+    put_customers_and_revenue,
+    update_customers_present,
+    update_customer_values,
+    write_customers_text,
+    write_text,
+)
 
 
 CUSTOMER_IMAGE_PATH = "images/final_logo.png"
@@ -16,7 +24,9 @@ POSITIONS = pd.read_json("data/positions.json")
 START_TIME = "08:00:00"
 
 
-@pytest.mark.parametrize('nonintegers', [["hey", "there"], 3.2, "5", ("bread", 5), None, -0.2, -5])
+@pytest.mark.parametrize(
+    "nonintegers", [["hey", "there"], 3.2, "5", ("bread", 5), None, -0.2, -5]
+)
 def test_draw(nonintegers):
     """Non-integer types and negative integers for x and y should throw an error"""
     with pytest.raises(Exception) as exc_info:
@@ -26,13 +36,15 @@ def test_draw(nonintegers):
         customer.draw(background)
 
 
-@pytest.mark.parametrize('locations', ['checkout', 'dairy', 'drinks', 'entrance', 'fruit', 'spices'])
+@pytest.mark.parametrize(
+    "locations", ["checkout", "dairy", "drinks", "entrance", "fruit", "spices"]
+)
 def test_load_positions(locations):
     """Source json shouldn't be empty'"""
     assert isinstance(POSITIONS[locations][0], dict) == True
 
 
-@pytest.mark.parametrize('nonstrings', [["hey", "there"], 5, ("bread", 5), None, True])
+@pytest.mark.parametrize("nonstrings", [["hey", "there"], 5, ("bread", 5), None, True])
 def test_location_name(nonstrings):
     """Non-string type for location.name should return an error"""
     with pytest.raises(Exception) as exc_info:
@@ -40,7 +52,16 @@ def test_location_name(nonstrings):
 
 
 LAMBDA_LIST = [0, 0.6, 3.4, 12, 100, 10000000]
-INDICES = [(0, LAMBDA_LIST), (1, LAMBDA_LIST), (2, LAMBDA_LIST), (3, LAMBDA_LIST), (4, LAMBDA_LIST), (5, LAMBDA_LIST)]
+INDICES = [
+    (0, LAMBDA_LIST),
+    (1, LAMBDA_LIST),
+    (2, LAMBDA_LIST),
+    (3, LAMBDA_LIST),
+    (4, LAMBDA_LIST),
+    (5, LAMBDA_LIST),
+]
+
+
 @pytest.mark.parametrize(["index", "example_list"], INDICES)
 def test_update_customers_present(example_list, index):
     """Customers present should never go above 8 for drawing purposes"""
@@ -61,7 +82,9 @@ def test_update_customers_present(example_list, index):
     assert update_customers_present(example_list, index) <= 8
 
 
-@pytest.mark.parametrize('nonstrings', [["I", "am", "a", "list"], 5, ("bread", 5), None, True])
+@pytest.mark.parametrize(
+    "nonstrings", [["I", "am", "a", "list"], 5, ("bread", 5), None, True]
+)
 def test_write_text(nonstrings):
     """Non-string type for text should return an error"""
     with pytest.raises(Exception) as exc_info:
