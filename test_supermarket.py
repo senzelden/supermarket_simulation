@@ -1,7 +1,4 @@
-import time
-
 import cv2
-import numpy as np
 import pandas as pd
 import pytest
 
@@ -36,9 +33,7 @@ def test_draw(nonintegers):
         customer.draw(background)
 
 
-@pytest.mark.parametrize(
-    "locations", ["checkout", "dairy", "drinks", "entrance", "fruit", "spices"]
-)
+@pytest.mark.parametrize("locations", ["checkout", "dairy", "drinks", "fruit", "spices"])
 def test_load_positions(locations):
     """Source json shouldn't be empty'"""
     assert isinstance(POSITIONS[locations][0], dict) == True
@@ -52,16 +47,7 @@ def test_location_name(nonstrings):
 
 
 LAMBDA_LIST = [0, 0.6, 3.4, 12, 100, 10000000]
-INDICES = [
-    (0, LAMBDA_LIST),
-    (1, LAMBDA_LIST),
-    (2, LAMBDA_LIST),
-    (3, LAMBDA_LIST),
-    (4, LAMBDA_LIST),
-    (5, LAMBDA_LIST),
-]
-
-
+INDICES = [(i, LAMBDA_LIST) for i in range(6)]
 @pytest.mark.parametrize(["index", "example_list"], INDICES)
 def test_update_customers_present(example_list, index):
     """Customers present should never go above 8 for drawing purposes"""
@@ -76,15 +62,7 @@ def test_update_customer_values():
     assert isinstance(new_x, int)
 
 
-@pytest.mark.parametrize(["index", "example_list"], INDICES)
-def test_update_customers_present(example_list, index):
-    """Customers present should never go above 8 for drawing purposes"""
-    assert update_customers_present(example_list, index) <= 8
-
-
-@pytest.mark.parametrize(
-    "nonstrings", [["I", "am", "a", "list"], 5, ("bread", 5), None, True]
-)
+@pytest.mark.parametrize("nonstrings", [["I", "a", "list"], 5, ("bread", 5), None, True])
 def test_write_text(nonstrings):
     """Non-string type for text should return an error"""
     with pytest.raises(Exception) as exc_info:
